@@ -13,7 +13,8 @@ This script is a Python-based console application designed to dub an input video
 
 ### Usage Notes:
 - Edit file paths and settings at the top.
-- Run via `python script.py`; requires Chrome and dependencies installed.
+- You need an input video, files called eng.srt and gael.srt in the your folder
+- Run via `python python dub_to_irish.py`; requires Chrome and dependencies installed.
 - Potential Issues: Selenium may need adjustments for site changes; long texts or network delays could extend runtime (built-in waits help mitigate rushing/overlaps).
 
 For your project, this could serve as a core dubbing pipeline—extend it for batch processing, error logging, or integration with other TTS services if needed! If you need a more detailed breakdown or modifications, let me know.
