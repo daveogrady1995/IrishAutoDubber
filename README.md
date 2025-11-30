@@ -28,7 +28,86 @@ It leverages **Selenium** to automate speech synthesis on [Abair.ie](https://www
 ## 🛠️ Installation
 
 ### 1. Prerequisites
-* **Python**: Version **3.11.9** is recommended for compatibility.
+* **Python**: Version **3.11.9** is recommended for compatibility. To install Python 3.11.9, download it from the official Python website and follow the platform-specific steps below. This version is a bugfix release in the 3.11 series, so the installation process is similar to other 3.11.x versions. Note that Python 3.11 is no longer the latest major release (as of 2025, 3.13 and 3.14 are available), but you can install older versions like this for compatibility reasons. After installation, verify the version with `python3.11 --version` or `python --version` (depending on how it's aliased).
+
+  #### Windows
+  1. Download the 64-bit installer (recommended for most users) from: https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe  
+     (For 32-bit systems, use: https://www.python.org/ftp/python/3.11.9/python-3.11.9.exe. For ARM64, use the experimental: https://www.python.org/ftp/python/3.11.9/python-3.11.9-arm64.exe.)
+     
+  2. Run the `.exe` file as an administrator.
+
+  3. In the installer wizard:
+     - Check the box for "Add python.exe to PATH" (this is crucial for command-line access).
+     - Select "Install for all users" if desired.
+     - Click "Install Now" or customize the installation path if needed.
+
+  4. Once complete, open Command Prompt and run `python --version` to confirm it's 3.11.9.
+
+  If you encounter issues, refer to the official Windows Python docs for troubleshooting.
+
+  #### macOS
+  1. Download the installer package from: https://www.python.org/ftp/python/3.11.9/python-3.11.9-macos11.pkg  
+     (This is a universal installer for macOS 10.9 and later, including Intel and Apple Silicon.)
+
+  2. Double-click the `.pkg` file to launch the installer.
+
+  3. Follow the on-screen prompts:
+     - Agree to the license.
+     - Choose the install location (default is fine).
+     - Complete the installation.
+
+  4. After installation, open Terminal and run `python3 --version` (or `python3.11 --version` if multiple versions are installed) to verify.
+
+  Alternatively, if you prefer Homebrew (a package manager for macOS), you can install Python 3.11 via `brew install python@3.11`, but this may give you the latest patch in the 3.11 series (e.g., 3.11.10+). For the exact 3.11.9, stick to the official installer. If using Homebrew, you may need to update your PATH or alias `python3` to point to the new version.
+
+  #### Linux (Ubuntu Focus)
+  Ubuntu's default package manager (`apt`) often provides a different Python version depending on your release (e.g., Ubuntu 22.04 has 3.10, 24.04 has 3.12). To install exactly 3.11.9, use the Deadsnakes PPA (a third-party repository for older Python versions) or compile from source.
+
+  ##### Using Deadsnakes PPA (Easiest for Ubuntu 20.04+)
+  1. Open Terminal and add the PPA:  
+     ```
+     sudo add-apt-repository ppa:deadsnakes/ppa
+     sudo apt update
+     ```
+
+  2. Install Python 3.11:  
+     ```
+     sudo apt install python3.11
+     ```
+     (This should give you 3.11.9 or the latest patch; check with `python3.11 --version`. If not exact, proceed to compiling from source.)
+
+  3. Optionally install pip and venv:  
+     ```
+     sudo apt install python3.11-venv python3.11-dev
+     ```
+
+  ##### Compiling from Source (For Exact Version on Any Linux Distro)
+  1. Download the source tarball: https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
+
+  2. Install build dependencies (on Ubuntu/Debian):  
+     ```
+     sudo apt update
+     sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
+     ```
+
+  3. Extract and compile:  
+     ```
+     tar -xf Python-3.11.9.tgz
+     cd Python-3.11.9
+     ./configure --enable-optimizations
+     make -j $(nproc)
+     sudo make altinstall  # Use 'altinstall' to avoid overwriting system Python
+     ```
+
+  4. Verify: `python3.11 --version`
+
+  For other Linux distros (e.g., Fedora, Arch), use their package managers (e.g., `dnf install python3.11` on Fedora) or adapt the source compile steps.
+
+  **Additional Tips**:
+  - **Multiple Versions**: If you have other Python versions installed, use tools like `pyenv` or virtual environments (`python -m venv`) to manage them without conflicts.
+  - **Verify Installation**: Always run `python3.11 --version` (or the alias you set) to confirm.
+  - **Why 3.11.9?**: If this is for the AutoIrishDubber project, it's recommended for compatibility, but newer 3.11.x patches should work similarly.
+
 * **FFmpeg**: Required by MoviePy. Download it from [ffmpeg.org](https://ffmpeg.org/download.html) and ensure it is added to your system PATH.
 * **Google Chrome**: Required for Selenium automation.
 
