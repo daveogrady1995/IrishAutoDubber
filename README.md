@@ -1,3 +1,7 @@
+# See the AI Dubbing Software in Action
+
+Check out this TikTok profile to see the AI dubbing software in action: [@bluey95883](https://www.tiktok.com/@bluey95883)
+
 # ☘️ AutoIrishDubber
 
 **AutoIrishDubber** is a Python-based console application designed to automatically dub an input video (`input.mp4`) into Irish (Gaeilge).
@@ -75,14 +79,11 @@ You must have the following three files in your project directory:
 
 💡 **Pro Tip: How to generate these files**
 
-1. **Transcribe**: Use OpenAI's Whisper to generate the English SRT:
-   ```bash
-   whisper input.mp4 --model large --language English
-   ```
+You can generate the SRT files using tools like CapCut or ClipChamp. Upload your video, use the auto-caption or auto-dub feature to generate subtitles, and export with the SRT file to get `eng.srt`.
 
-2. **Translate**: Translate the content of `eng.srt` to Irish using Google Translate or DeepL.
+1. **Translate**: Copy the content of `eng.srt` and ask Grok or Gemini to translate it to Irish (or use Google Translate or DeepL).
 
-3. **Save**: Save the translated file as `gael.srt`.
+2. **Save**: Save the translated file as `gael.srt`, ensuring the timings match the English file.
 
 ### Step 2: Run the Script
 
