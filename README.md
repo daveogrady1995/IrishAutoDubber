@@ -1,20 +1,122 @@
-# IrishAutoDubber
-This script is a Python-based console application designed to dub an input video (`input.mp4`) into Irish audio using paired English and Irish subtitle files (`eng.srt` and `gael.srt`). It leverages Selenium to automate speech synthesis on the Abair.ie website, generating dubbed audio segments that align with subtitle timings, and then muxes the new audio into an output video (`dubbed_kerry_reverted.mp4`). It also produces updated subtitle files with adjusted timings (`subtitles_english.srt` and `subtitles_irish.srt`), and keeps the dubbed audio track (`dubbed_audio.wav`) for reference.
+# ☘️ AutoIrishDubber
 
-### Key Features:
-- **Input Parsing**: Reads and syncs English and Irish SRT subtitles, ensuring matching segments.
-- **Voice Selection**: Randomly chooses between Kerry dialect voices (Male "Danny" or Female) at 100% speed, with AI model enabled.
-- **Smart Timing**: Adjusts subtitle durations based on text length and reading speed (14 chars/sec), extending into silence gaps to avoid overlaps, with a skip threshold for lagged segments.
-- **Selenium Automation**: Sets up Chrome to interact with Abair.ie—handles cookies, language switch to Irish, dialect/gender/voice/model/speed settings, text input, synthesis, and audio download. Includes retries, delays (e.g., 2-5 seconds between actions), and cleanup of temp files to prevent overlaps.
-- **Audio Processing**: Uses pydub to build a silent-initialized track, inserts synced silence gaps, appends synthesized audio segments, and exports as WAV.
-- **Video Muxing**: Employs moviepy to replace the original video audio with the dubbed track, handling potential decoding errors gracefully.
-- **Progress & Output**: Displays a console progress bar during dubbing, writes adjusted SRTs, cleans up temps (except dubbed audio), and logs completion.
-- **Dependencies**: moviepy, pydub, selenium (with ChromeDriver), and standard libs like os, time, glob.
+**AutoIrishDubber** is a Python-based console application designed to automatically dub an input video (`input.mp4`) into Irish (Gaeilge).
 
-### Usage Notes:
-- Edit file paths and settings at the top.
-- You need an input video, files called eng.srt and gael.srt in the your folder
-- Run via `python dub_to_irish.py`; requires Chrome and dependencies installed.
-- Potential Issues: Selenium may need adjustments for site changes; long texts or network delays could extend runtime (built-in waits help mitigate rushing/overlaps).
+It leverages **Selenium** to automate speech synthesis on [Abair.ie](https://www.abair.ie/), generating dubbed audio segments that align with subtitle timings. It then mixes the new audio into an output video and produces updated subtitle files with adjusted timings.
 
-For your project, this could serve as a core dubbing pipeline—extend it for batch processing, error logging, or integration with other TTS services if needed! If you need a more detailed breakdown or modifications, let me know.
+---
+
+## 🚀 Key Features
+
+* **🎬 Input Parsing & Syncing**: Reads and synchronizes English and Irish SRT subtitles, ensuring segments match perfectly.
+* **🗣️ Authentic Voice Selection**: Randomly selects between high-quality **Kerry dialect voices** (Male "Danny" or Female) or **Connemara Female** (AI model enabled).
+* **⏱️ Smart Timing Logic**:
+    * Adjusts subtitle durations based on text length and reading speed (~14 chars/sec).
+    * Extends audio into silence gaps to avoid chopping.
+    * Includes a skip threshold for lagged segments.
+* **🤖 Selenium Automation**: Fully automates the interaction with Abair.ie (cookies, language switching, dialect/model selection, speed settings, synthesis, and file download). Includes robust retry logic and temp file cleanup.
+* **🔊 Audio Processing**: Uses `pydub` to build a clean audio track, inserting synced silences and appending synthesized audio (with optional speed-up for specific voices).
+* **🎞️ Video Muxing**: Uses `moviepy` to replace the original audio with the new Irish track, handling decoding errors gracefully.
+* **📊 Progress Tracking**: Displays a console progress bar during the dubbing process.
+
+---
+
+## 🛠️ Installation
+
+### 1. Prerequisites
+* **Python**: Version **3.11.9** is recommended for compatibility.
+* **FFmpeg**: Required by MoviePy. Download it from [ffmpeg.org](https://ffmpeg.org/download.html) and ensure it is added to your system PATH.
+* **Google Chrome**: Required for Selenium automation.
+
+### 2. Setup Virtual Environment
+It is recommended to use a virtual environment to avoid dependency conflicts.
+
+```bash
+# Create the environment
+python -m venv venv
+
+# Activate the environment
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install moviepy pydub selenium webdriver-manager
+```
+
+## 📂 Project Structure
+
+Place the following files in your root project folder:
+
+| File              | Description                                                                 |
+|-------------------|-----------------------------------------------------------------------------|
+| dub_to_irish.py   | Main Script. Run this to start the dubbing process.                         |
+| abair_utils.py    | Utilities for interacting with Abair.ie.                                    |
+| helpers.py        | General helpers (progress bars, time formatting).                           |
+| srt_utils.py      | Parsers and writers for .srt subtitle files.                                |
+| timing_utils.py   | Logic for smart timing calculation and sync.                                |
+| selenium_utils.py | Boilerplate for setting up the Chrome WebDriver.                            |
+
+## ⚙️ Usage & Workflow
+
+### Step 1: Prepare Input Files
+
+You must have the following three files in your project directory:
+
+1. `input.mp4`: The video you want to dub.
+
+2. `eng.srt`: The English subtitles.
+
+3. `gael.srt`: The Irish translations (must match the timing of the English file).
+
+💡 **Pro Tip: How to generate these files**
+
+1. **Transcribe**: Use OpenAI's Whisper to generate the English SRT:
+   ```bash
+   whisper input.mp4 --model large --language English
+   ```
+
+2. **Translate**: Translate the content of `eng.srt` to Irish using Google Translate or DeepL.
+
+3. **Save**: Save the translated file as `gael.srt`.
+
+### Step 2: Run the Script
+
+Execute the main script via the console:
+```bash
+python dub_to_irish.py
+```
+
+### Step 3: Outputs
+
+Upon completion, the script generates:
+
+* `dubbed_kerry_reverted.mp4`: The final video with Irish audio.
+
+* `dubbed_audio.wav`: The standalone dubbed audio track (for reference).
+
+* `subtitles_english.srt` & `subtitles_irish.srt`: New subtitle files with timings adjusted to match the spoken Irish audio.
+
+## 🎥 Post-Processing (CapCut Studio)
+
+The generated subtitle files are optimized for video editing software like CapCut.
+
+1. Open your project in CapCut Studio.
+
+2. Import `dubbed_kerry_reverted.mp4`.
+
+3. Drag `subtitles_english.srt` or `subtitles_irish.srt` onto the timeline.
+
+4. Result: They will align automatically with the new video timings!
+
+## 📝 Configuration & Notes
+
+* **Voice Customization**: You can modify the specific voices used by editing the `voices` list inside `dub_to_irish.py`.
+
+* **Performance**: Selenium relies on the live Abair.ie website. Long texts or network delays may extend runtime. The script includes built-in waits (2-5 seconds) to mitigate errors.
+
+* **Work in Progress**: The output filename (`dubbed_kerry_reverted.mp4`) is currently hardcoded but can be changed in the main script.
