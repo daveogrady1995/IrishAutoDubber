@@ -67,7 +67,6 @@ def run_dubbing_process(video_path, eng_srt_path, gael_srt_path, output_filename
     voices = [
         {"dialect": "Kerry", "gender": "Female"},
         {"dialect": "Kerry", "gender": "Male"},
-        {"dialect": "Connemara", "gender": "Female"},
     ]
 
     # 4. Dub Loop

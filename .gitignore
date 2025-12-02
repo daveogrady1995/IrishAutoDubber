@@ -48,6 +48,3 @@ drivers/chromedriver-win64/chromedriver.exe
 dubbed_audio.wav
 temp_seg.mp3
 subtitles_*.srt
-
-# Test data
-irishautodub/
