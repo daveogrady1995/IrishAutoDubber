@@ -194,6 +194,7 @@ def run_dubbing_process(video_path, eng_srt_path, gael_srt_path, output_filename
             threads=4,
             preset="fast",
             logger=None,
+            temp_audiofile=os.path.join(temp_dir, "temp_audio.m4a"),
         )
     except Exception as e:
         print(f"Error writing video: {e}")
