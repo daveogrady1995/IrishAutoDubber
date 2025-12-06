@@ -13,6 +13,7 @@ import time
 import glob
 import shutil
 import random
+import tempfile
 
 # Import helpers from the gui package (migrated from `source` into `gui`)
 from gui.helpers import print_progress
@@ -174,9 +175,13 @@ def run_dubbing_process(video_path, eng_srt_path, gael_srt_path, output_filename
     # 5. Mixing & Export
     print("\n5. Muxing Final Video...")
 
-    dub_track.export("dubbed_audio.wav", format="wav")
+    # Use temporary directory for intermediate files
+    temp_dir = tempfile.gettempdir()
+    temp_audio_path = os.path.join(temp_dir, "dubbed_audio.wav")
+    
+    dub_track.export(temp_audio_path, format="wav")
 
-    new_audioclip = AudioFileClip("dubbed_audio.wav")
+    new_audioclip = AudioFileClip(temp_audio_path)
     final_video = video.with_audio(new_audioclip)
 
     output_path = os.path.join(os.path.dirname(video_path), output_filename)
@@ -206,6 +211,11 @@ def run_dubbing_process(video_path, eng_srt_path, gael_srt_path, output_filename
     # Cleanup
     for f in ["temp_seg.mp3"]:
         if os.path.exists(f):
+            os.remove(f)
+    
+    # Cleanup temporary audio file
+    if os.path.exists(temp_audio_path):
+        os.remove(temp_audio_path)
             os.remove(f)
 
     print("\nDONE!")
