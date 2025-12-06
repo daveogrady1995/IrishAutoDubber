@@ -37,6 +37,7 @@ create_dmg.sh
 *.app
 dist/*.dmg
 build/*.dmg
+AbairDubbing-macOS.dmg
 
 # IDE
 .vscode/
