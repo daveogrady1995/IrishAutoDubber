@@ -1,4 +1,13 @@
-# Dubbing Project (apps)
+# Irish Auto-Dubber
+
+An application for automatically dubbing videos from English to Irish using the Abair TTS service.
+
+## Download
+
+**Latest Release: v1.0.1**
+- [Download Windows Installer](https://bitbucket.org/daveogrady1995/irishautodubber/downloads/AbairDubbing_Setup_v5.exe)
+
+## About
 
 This workspace contains the dubbing pipeline and two frontends (CLI and GUI).
 
