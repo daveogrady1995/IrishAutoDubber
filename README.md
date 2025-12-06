@@ -5,7 +5,7 @@ An application for automatically dubbing videos from English to Irish using the 
 ## Download
 
 **Latest Release: v1.0.1**
-- [Download Windows Installer](https://bitbucket.org/daveogrady1995/irishautodubber/downloads/AbairDubbing_Setup_v5.exe)
+- [Download Windows Installer](https://www.dropbox.com/scl/fi/zs4yxmtigltysru8j0iy1/AbairDubbing_Setup_v5.exe?rlkey=c6z6b90f8584eyc76s4pwjz02&st=rzgcdwxh&dl=0)
 
 ## About
 
