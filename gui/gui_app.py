@@ -11,11 +11,30 @@ from dubbing_core import run_dub
 
 class RoundedButton(tk.Canvas):
     """Custom rounded button with Material Design styling"""
-    def __init__(self, parent, text, command, bg_color, fg_color, hover_color, 
-                 font=("SF Pro Text", 12, "bold"), width=120, height=40, **kwargs):
-        tk.Canvas.__init__(self, parent, height=height, width=width, 
-                          bg=parent.cget('bg'), highlightthickness=0, **kwargs)
-        
+
+    def __init__(
+        self,
+        parent,
+        text,
+        command,
+        bg_color,
+        fg_color,
+        hover_color,
+        font=("SF Pro Text", 12, "bold"),
+        width=120,
+        height=40,
+        **kwargs,
+    ):
+        tk.Canvas.__init__(
+            self,
+            parent,
+            height=height,
+            width=width,
+            bg=parent.cget("bg"),
+            highlightthickness=0,
+            **kwargs,
+        )
+
         self.command = command
         self.bg_color = bg_color
         self.fg_color = fg_color
@@ -26,50 +45,75 @@ class RoundedButton(tk.Canvas):
         self.width = width
         self.is_disabled = False
         self.click_in_progress = False
-        
+
         # Create rounded rectangle
-        self.rect = self.create_rounded_rect(0, 0, width, height, radius=8, fill=bg_color)
-        self.text_item = self.create_text(width/2, height/2, text=text, 
-                                         fill=fg_color, font=font)
-        
+        self.rect = self.create_rounded_rect(
+            0, 0, width, height, radius=8, fill=bg_color
+        )
+        self.text_item = self.create_text(
+            width / 2, height / 2, text=text, fill=fg_color, font=font
+        )
+
         # Only bind to canvas level - prevents duplicate events
         self.bind("<Button-1>", self._on_press)
         self.bind("<ButtonRelease-1>", self._on_release)
         self.bind("<Enter>", self._on_enter)
         self.bind("<Leave>", self._on_leave)
-        
+
         self.config(cursor="hand2")
-        
+
     def create_rounded_rect(self, x1, y1, x2, y2, radius=20, **kwargs):
-        points = [x1+radius, y1,
-                 x1+radius, y1,
-                 x2-radius, y1,
-                 x2-radius, y1,
-                 x2, y1,
-                 x2, y1+radius,
-                 x2, y1+radius,
-                 x2, y2-radius,
-                 x2, y2-radius,
-                 x2, y2,
-                 x2-radius, y2,
-                 x2-radius, y2,
-                 x1+radius, y2,
-                 x1+radius, y2,
-                 x1, y2,
-                 x1, y2-radius,
-                 x1, y2-radius,
-                 x1, y1+radius,
-                 x1, y1+radius,
-                 x1, y1]
+        points = [
+            x1 + radius,
+            y1,
+            x1 + radius,
+            y1,
+            x2 - radius,
+            y1,
+            x2 - radius,
+            y1,
+            x2,
+            y1,
+            x2,
+            y1 + radius,
+            x2,
+            y1 + radius,
+            x2,
+            y2 - radius,
+            x2,
+            y2 - radius,
+            x2,
+            y2,
+            x2 - radius,
+            y2,
+            x2 - radius,
+            y2,
+            x1 + radius,
+            y2,
+            x1 + radius,
+            y2,
+            x1,
+            y2,
+            x1,
+            y2 - radius,
+            x1,
+            y2 - radius,
+            x1,
+            y1 + radius,
+            x1,
+            y1 + radius,
+            x1,
+            y1,
+        ]
         return self.create_polygon(points, smooth=True, **kwargs)
-    
+
     def _on_press(self, event):
         # Record that we started a click on this button
         if not self.is_disabled and not self.click_in_progress:
             self.click_in_progress = True
             self.itemconfig(self.rect, fill=self.hover_color)
         return "break"  # Stop event propagation
-    
+
     def _on_release(self, event):
         # Only execute if we had a press and release is within bounds
         if not self.is_disabled and self.click_in_progress:
@@ -86,27 +130,27 @@ class RoundedButton(tk.Canvas):
             self.click_in_progress = False
             self.itemconfig(self.rect, fill=self.bg_color)
         return "break"  # Stop event propagation
-    
+
     def _on_enter(self, event):
         if not self.is_disabled:
             self.itemconfig(self.rect, fill=self.hover_color)
-    
+
     def _on_leave(self, event):
         if not self.is_disabled:
             self.itemconfig(self.rect, fill=self.bg_color)
-    
+
     def update_color(self, new_color):
         self.bg_color = new_color
         self.itemconfig(self.rect, fill=new_color)
-    
+
     def update_text(self, new_text):
         self.text = new_text
         self.itemconfig(self.text_item, text=new_text)
-    
+
     def disable(self):
         self.is_disabled = True
         self.config(cursor="arrow")
-    
+
     def enable(self):
         self.is_disabled = False
         self.config(cursor="hand2")
@@ -116,29 +160,30 @@ class DubbingApp:
     def __init__(self, master):
         self.master = master
         master.title("Abair - Irish Auto Dubbing")
-        
-        # Set window size and make it non-resizable for consistent look
-        master.geometry("900x700")
-        master.resizable(False, False)
-        
+
+        # Set window size and make it resizable
+        master.geometry("900x1000")
+        master.resizable(True, True)
+        master.minsize(900, 950)
+
         # Modern color scheme (light mode)
         self.colors = {
-            'bg': '#F8F9FA',           # Light background
-            'card': '#FFFFFF',          # White cards
-            'primary': '#5B68F4',       # Bright indigo primary
-            'primary_hover': '#4F5CE5', # Darker indigo
-            'secondary': '#8B94FF',     # Light indigo secondary
-            'success': '#10B981',       # Green
-            'danger': '#EF4444',        # Red
-            'text': '#1F2937',          # Dark gray text
-            'text_light': '#6B7280',    # Light gray text
-            'border': '#E5E7EB',        # Border gray
-            'input_bg': '#F9FAFB',      # Input background
+            "bg": "#F8F9FA",  # Light background
+            "card": "#FFFFFF",  # White cards
+            "primary": "#5B68F4",  # Bright indigo primary
+            "primary_hover": "#4F5CE5",  # Darker indigo
+            "secondary": "#8B94FF",  # Light indigo secondary
+            "success": "#10B981",  # Green
+            "danger": "#EF4444",  # Red
+            "text": "#1F2937",  # Dark gray text
+            "text_light": "#6B7280",  # Light gray text
+            "border": "#E5E7EB",  # Border gray
+            "input_bg": "#F9FAFB",  # Input background
         }
-        
+
         # Configure master background
-        master.configure(bg=self.colors['bg'])
-        
+        master.configure(bg=self.colors["bg"])
+
         # --- Variables to store selected file paths ---
         self.paths = {
             "video": tk.StringVar(),
@@ -147,7 +192,7 @@ class DubbingApp:
         }
         # Variable for the output filename (default name is set here)
         self.output_name = tk.StringVar(value="dubbed_output.mp4")
-        
+
         # File display names (shortened paths)
         self.file_displays = {
             "video": tk.StringVar(value="No file selected"),
@@ -160,34 +205,34 @@ class DubbingApp:
 
     def create_widgets(self):
         # Main container with padding
-        main_container = tk.Frame(self.master, bg=self.colors['bg'])
+        main_container = tk.Frame(self.master, bg=self.colors["bg"])
         main_container.pack(fill="both", expand=True, padx=30, pady=30)
-        
+
         # Header
-        header_frame = tk.Frame(main_container, bg=self.colors['bg'])
+        header_frame = tk.Frame(main_container, bg=self.colors["bg"])
         header_frame.pack(fill="x", pady=(0, 30))
-        
+
         title_label = tk.Label(
             header_frame,
             text="Irish Auto Dubbing",
             font=("SF Pro Display", 28, "bold"),
-            bg=self.colors['bg'],
-            fg=self.colors['text']
+            bg=self.colors["bg"],
+            fg=self.colors["text"],
         )
         title_label.pack(anchor="w")
-        
+
         subtitle_label = tk.Label(
             header_frame,
             text="Dub your videos into Irish Gaelic with Abair.ie",
             font=("SF Pro Text", 13),
-            bg=self.colors['bg'],
-            fg=self.colors['text_light']
+            bg=self.colors["bg"],
+            fg=self.colors["text_light"],
         )
         subtitle_label.pack(anchor="w", pady=(5, 0))
-        
+
         # 1. Input Files Card
         files_card = self.create_card(main_container, "Upload Files")
-        
+
         files_to_select = [
             ("Video File", "video", [("Video Files", "*.mp4 *.mov *.avi")], "🎬"),
             ("English Subtitles", "eng_srt", [("SRT Files", "*.srt")], "🇬🇧"),
@@ -196,148 +241,150 @@ class DubbingApp:
 
         for i, (label_text, var_key, filetypes, icon) in enumerate(files_to_select):
             self.create_file_input(files_card, label_text, var_key, filetypes, icon, i)
-        
+
         # 2. Output Configuration Card
         output_card = self.create_card(main_container, "Output Settings")
-        
-        output_inner = tk.Frame(output_card, bg=self.colors['card'])
+
+        output_inner = tk.Frame(output_card, bg=self.colors["card"])
         output_inner.pack(fill="x", padx=20, pady=(10, 20))
-        
+
         tk.Label(
             output_inner,
             text="Output Filename",
             font=("SF Pro Text", 12, "bold"),
-            bg=self.colors['card'],
-            fg=self.colors['text']
+            bg=self.colors["card"],
+            fg=self.colors["text"],
         ).pack(anchor="w", pady=(0, 8))
-        
+
         output_entry = tk.Entry(
             output_inner,
             textvariable=self.output_name,
             font=("SF Pro Text", 13),
-            bg=self.colors['input_bg'],
-            fg=self.colors['text'],
+            bg=self.colors["input_bg"],
+            fg=self.colors["text"],
             relief="flat",
             highlightthickness=1,
-            highlightbackground=self.colors['border'],
-            highlightcolor=self.colors['primary']
+            highlightbackground=self.colors["border"],
+            highlightcolor=self.colors["primary"],
         )
         output_entry.pack(fill="x", ipady=10, ipadx=12)
 
         # 3. Status and Action Section
-        action_frame = tk.Frame(main_container, bg=self.colors['bg'])
+        action_frame = tk.Frame(main_container, bg=self.colors["bg"])
         action_frame.pack(fill="x", pady=(20, 0))
-        
+
         # Status indicator
-        status_container = tk.Frame(action_frame, bg=self.colors['card'], relief="flat")
+        status_container = tk.Frame(action_frame, bg=self.colors["card"], relief="flat")
         status_container.pack(fill="x", pady=(0, 15))
-        
-        status_inner = tk.Frame(status_container, bg=self.colors['card'])
+
+        status_inner = tk.Frame(status_container, bg=self.colors["card"])
         status_inner.pack(fill="x", padx=20, pady=15)
-        
+
         self.status_indicator = tk.Label(
             status_inner,
             text="●",
             font=("SF Pro Text", 20),
-            bg=self.colors['card'],
-            fg=self.colors['text_light']
+            bg=self.colors["card"],
+            fg=self.colors["text_light"],
         )
         self.status_indicator.pack(side="left", padx=(0, 10))
-        
+
         self.status_label = tk.Label(
             status_inner,
             text="Ready to start",
             font=("SF Pro Text", 13),
-            bg=self.colors['card'],
-            fg=self.colors['text']
+            bg=self.colors["card"],
+            fg=self.colors["text"],
         )
         self.status_label.pack(side="left")
-        
+
         # Start button - Using custom rounded button
-        button_container = tk.Frame(action_frame, bg=self.colors['bg'])
+        button_container = tk.Frame(action_frame, bg=self.colors["bg"])
         button_container.pack(fill="x")
-        
+
         self.start_button = RoundedButton(
             button_container,
             text="Start Dubbing",
             command=self.start_dubbing_thread,
-            bg_color=self.colors['primary'],
+            bg_color=self.colors["primary"],
             fg_color="white",
-            hover_color=self.colors['primary_hover'],
+            hover_color=self.colors["primary_hover"],
             font=("SF Pro Text", 15, "bold"),
             width=840,  # Full width minus padding
-            height=50
+            height=50,
         )
         self.start_button.pack()
-    
+
     def create_card(self, parent, title):
         """Create a modern card container"""
-        card_container = tk.Frame(parent, bg=self.colors['bg'])
+        card_container = tk.Frame(parent, bg=self.colors["bg"])
         card_container.pack(fill="x", pady=(0, 20))
-        
-        card = tk.Frame(card_container, bg=self.colors['card'], relief="flat", highlightthickness=0)
+
+        card = tk.Frame(
+            card_container, bg=self.colors["card"], relief="flat", highlightthickness=0
+        )
         card.pack(fill="x")
-        
+
         # Card header
-        header = tk.Frame(card, bg=self.colors['card'])
+        header = tk.Frame(card, bg=self.colors["card"])
         header.pack(fill="x", padx=20, pady=(20, 10))
-        
+
         tk.Label(
             header,
             text=title,
             font=("SF Pro Text", 16, "bold"),
-            bg=self.colors['card'],
-            fg=self.colors['text']
+            bg=self.colors["card"],
+            fg=self.colors["text"],
         ).pack(anchor="w")
-        
+
         return card
-    
+
     def create_file_input(self, parent, label, var_key, filetypes, icon, index):
         """Create a modern file input row"""
-        row_frame = tk.Frame(parent, bg=self.colors['card'])
+        row_frame = tk.Frame(parent, bg=self.colors["card"])
         row_frame.pack(fill="x", padx=20, pady=(0, 15))
-        
+
         # Label with icon
-        label_frame = tk.Frame(row_frame, bg=self.colors['card'])
+        label_frame = tk.Frame(row_frame, bg=self.colors["card"])
         label_frame.pack(fill="x", pady=(0, 8))
-        
+
         tk.Label(
             label_frame,
             text=f"{icon}  {label}",
             font=("SF Pro Text", 12, "bold"),
-            bg=self.colors['card'],
-            fg=self.colors['text']
+            bg=self.colors["card"],
+            fg=self.colors["text"],
         ).pack(side="left")
-        
+
         # File display and browse button container
-        input_container = tk.Frame(row_frame, bg=self.colors['input_bg'], relief="flat")
+        input_container = tk.Frame(row_frame, bg=self.colors["input_bg"], relief="flat")
         input_container.pack(fill="x")
-        
-        inner_container = tk.Frame(input_container, bg=self.colors['input_bg'])
+
+        inner_container = tk.Frame(input_container, bg=self.colors["input_bg"])
         inner_container.pack(fill="x", padx=15, pady=12)
-        
+
         # File name display
         file_label = tk.Label(
             inner_container,
             textvariable=self.file_displays[var_key],
             font=("SF Pro Text", 12),
-            bg=self.colors['input_bg'],
-            fg=self.colors['text_light'],
-            anchor="w"
+            bg=self.colors["input_bg"],
+            fg=self.colors["text_light"],
+            anchor="w",
         )
         file_label.pack(side="left", fill="x", expand=True)
-        
+
         # Browse button - Using custom rounded button
         browse_btn = RoundedButton(
             inner_container,
             text="Browse",
             command=lambda: self.browse_file(var_key, filetypes),
-            bg_color=self.colors['primary'],
+            bg_color=self.colors["primary"],
             fg_color="white",
-            hover_color=self.colors['primary_hover'],
+            hover_color=self.colors["primary_hover"],
             font=("SF Pro Text", 11, "bold"),
             width=100,
-            height=36
+            height=36,
         )
         browse_btn.pack(side="right")
 
@@ -367,7 +414,7 @@ class DubbingApp:
         # 2. Disable button and update status
         self.start_button.disable()
         self.start_button.update_text("Processing...")
-        self.start_button.update_color(self.colors['text_light'])
+        self.start_button.update_color(self.colors["text_light"])
         self.status_label.config(text="Processing - Please wait...")
         self.status_indicator.config(fg="#F59E0B")  # Orange
 
@@ -398,18 +445,18 @@ class DubbingApp:
 
     def finish_process(self, message, color):
         self.start_button.update_text("Start Dubbing")
-        self.start_button.update_color(self.colors['primary'])
+        self.start_button.update_color(self.colors["primary"])
         self.start_button.config(cursor="hand2")
 
         # Check for error prefix or red color
         if color == "red" or message.startswith("ERROR:"):
             messagebox.showerror("Process Failed", message)
             self.status_label.config(text="Failed - See error message")
-            self.status_indicator.config(fg=self.colors['danger'])
+            self.status_indicator.config(fg=self.colors["danger"])
         else:
             messagebox.showinfo("Process Complete", message)
             self.status_label.config(text="Complete! Video ready")
-            self.status_indicator.config(fg=self.colors['success'])
+            self.status_indicator.config(fg=self.colors["success"])
 
 
 if __name__ == "__main__":
