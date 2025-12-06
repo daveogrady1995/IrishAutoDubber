@@ -30,6 +30,14 @@ wheels/
 build/
 dist/
 
+# macOS builds (local only - not for git)
+build_macos.spec
+build_macos.sh
+create_dmg.sh
+*.app
+dist/*.dmg
+build/*.dmg
+
 # IDE
 .vscode/
 .idea/
