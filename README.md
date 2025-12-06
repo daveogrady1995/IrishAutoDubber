@@ -2,6 +2,10 @@
 
 An application for automatically dubbing videos from English to Irish using the Abair TTS service.
 
+![Irish Auto Dubbing Interface](images/app-screenshot.png)
+
+Simply upload your video file, provide English and Irish subtitle files (.srt), and let the app automatically generate an Irish-dubbed version of your video using high-quality text-to-speech from Abair.ie.
+
 ## Download
 
 **Latest Release: v1.0.1**
