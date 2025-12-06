@@ -81,5 +81,3 @@ Notes
 
 - End-to-end dubbing requires Chrome and network access to `https://abair.ie/synthesis`.
 - `requirements.txt` is pinned from the `.venv` — regenerate it with `.\.venv\Scripts\python.exe -m pip freeze > requirements.txt` after making env changes.
-
-If you want, I can now: (A) remove the `source/` folder, (B) leave it and only keep `archive/source_backup/`, or (C) create a git branch/tag for this migration. Tell me which you prefer.
