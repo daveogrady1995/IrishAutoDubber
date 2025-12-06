@@ -216,7 +216,6 @@ def run_dubbing_process(video_path, eng_srt_path, gael_srt_path, output_filename
     # Cleanup temporary audio file
     if os.path.exists(temp_audio_path):
         os.remove(temp_audio_path)
-            os.remove(f)
 
     print("\nDONE!")
     return f"Success! Output video saved as: {output_path}"
