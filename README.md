@@ -41,6 +41,40 @@ Run import smoke-check:
 .\.venv\Scripts\python.exe smoke2.py
 ```
 
+## Building the Installer
+
+To create a Windows installer for distribution:
+
+### Step 1: Build the Executable with PyInstaller
+
+```pwsh
+# Navigate to the app directory
+cd C:\Darts\dubbing_project\irishautodub\app
+
+# Build the executable using PyInstaller
+.\.venv\Scripts\python.exe -m PyInstaller --clean AbairDubbing_onedir_v5.spec
+```
+
+This will create a folder `dist\AbairDubbing_onedir_v5\` containing the executable and all dependencies.
+
+### Step 2: Create the Installer with Inno Setup
+
+```pwsh
+# Compile the installer using Inno Setup
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "c:\Darts\dubbing_project\irishautodub\app\dist\InnoSetup\AbairDubbingInstaller.iss"
+```
+
+This will create `AbairDubbing_Setup_v5.exe` in `dist\InstallerOutput\`.
+
+### Step 3: Distribute
+
+Upload the installer to Dropbox or your preferred file hosting service and update the download link in this README.
+
+### Build Configuration Files
+
+- **PyInstaller spec**: `AbairDubbing_onedir_v5.spec` - Defines what gets bundled into the executable
+- **Inno Setup script**: `dist/InnoSetup/AbairDubbingInstaller.iss` - Defines the installer behavior and shortcuts
+
 Notes
 
 - End-to-end dubbing requires Chrome and network access to `https://abair.ie/synthesis`.
