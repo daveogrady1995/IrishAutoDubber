@@ -178,7 +178,7 @@ def run_dubbing_process(video_path, eng_srt_path, gael_srt_path, output_filename
     # Use temporary directory for intermediate files
     temp_dir = tempfile.gettempdir()
     temp_audio_path = os.path.join(temp_dir, "dubbed_audio.wav")
-    
+
     dub_track.export(temp_audio_path, format="wav")
 
     new_audioclip = AudioFileClip(temp_audio_path)
@@ -212,7 +212,7 @@ def run_dubbing_process(video_path, eng_srt_path, gael_srt_path, output_filename
     for f in ["temp_seg.mp3"]:
         if os.path.exists(f):
             os.remove(f)
-    
+
     # Cleanup temporary audio file
     if os.path.exists(temp_audio_path):
         os.remove(temp_audio_path)
