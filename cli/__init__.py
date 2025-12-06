@@ -1,16 +1,8 @@
-"""Compatibility shim package `cli` that re-exports the `irishautodub` CLI entry.
+"""CLI package for the Irish dubbing pipeline.
 
-This keeps a clearer package name for CLI consumers while the implementation
-remains in `irishautodub`.
+This provides the command-line interface for dubbing videos.
 """
 
-from importlib import import_module
+from .dub_to_irish import main
 
-dub = import_module("irishautodub.dub_to_irish")
-
-
-def run_dubbing_pipeline(*args, **kwargs):
-    return dub.run_dubbing_pipeline(*args, **kwargs)
-
-
-__all__ = ["dub", "run_dubbing_pipeline"]
+__all__ = ["main"]

@@ -35,8 +35,15 @@ def setup_selenium(current_folder):
             base = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         return os.path.join(base, p)
 
-    # Prefer an included chromedriver.exe if bundled with the app
-    driver_path = resource_path(os.path.join("drivers", "chromedriver.exe"))
+    # Prefer an included chromedriver if bundled with the app
+    # Use different executable name based on platform
+    import platform
+    if platform.system() == "Windows":
+        driver_filename = "chromedriver.exe"
+    else:
+        driver_filename = "chromedriver"
+    
+    driver_path = resource_path(os.path.join("drivers", driver_filename))
     if os.path.exists(driver_path):
         service = Service(driver_path)
     else:
