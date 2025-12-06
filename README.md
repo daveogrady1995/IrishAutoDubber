@@ -49,7 +49,7 @@ To create a Windows installer for distribution:
 
 ```pwsh
 # Navigate to the app directory
-cd C:\Darts\dubbing_project\irishautodub\app
+cd <your-project-path>\app
 
 # Build the executable using PyInstaller
 .\.venv\Scripts\python.exe -m PyInstaller --clean AbairDubbing_onedir_v5.spec
@@ -61,10 +61,12 @@ This will create a folder `dist\AbairDubbing_onedir_v5\` containing the executab
 
 ```pwsh
 # Compile the installer using Inno Setup
-& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "c:\Darts\dubbing_project\irishautodub\app\dist\InnoSetup\AbairDubbingInstaller.iss"
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "<your-project-path>\app\dist\InnoSetup\AbairDubbingInstaller.iss"
 ```
 
 This will create `AbairDubbing_Setup_v5.exe` in `dist\InstallerOutput\`.
+
+**Note**: Update the paths in `dist\InnoSetup\AbairDubbingInstaller.iss` to match your project location before running Inno Setup.
 
 ### Step 3: Distribute
 
