@@ -45,9 +45,11 @@ Run import smoke-check:
 
 ## Building the Installer
 
+### Windows Installer
+
 To create a Windows installer for distribution:
 
-### Step 1: Build the Executable with PyInstaller
+#### Step 1: Build the Executable with PyInstaller
 
 ```pwsh
 # Navigate to the app directory
@@ -59,7 +61,7 @@ cd <your-project-path>\app
 
 This will create a folder `dist\AbairDubbing_onedir_v5\` containing the executable and all dependencies.
 
-### Step 2: Create the Installer with Inno Setup
+#### Step 2: Create the Installer with Inno Setup
 
 ```pwsh
 # Compile the installer using Inno Setup
@@ -70,14 +72,48 @@ This will create `AbairDubbing_Setup_v5.exe` in `dist\InstallerOutput\`.
 
 **Note**: Update the paths in `dist\InnoSetup\AbairDubbingInstaller.iss` to match your project location before running Inno Setup.
 
-### Step 3: Distribute
-
-Upload the installer to Dropbox or your preferred file hosting service and update the download link in this README.
-
-### Build Configuration Files
+#### Build Configuration Files
 
 - **PyInstaller spec**: `AbairDubbing_onedir_v5.spec` - Defines what gets bundled into the executable
 - **Inno Setup script**: `dist/InnoSetup/AbairDubbingInstaller.iss` - Defines the installer behavior and shortcuts
+
+### macOS Installer
+
+To create a macOS DMG installer for distribution:
+
+#### Step 1: Build the .app Bundle
+
+```bash
+# Make the build script executable
+chmod +x build_macos.sh
+
+# Run the build script
+./build_macos.sh
+```
+
+This will create `dist/AbairDubbing.app` containing the application bundle.
+
+#### Step 2: Create the DMG
+
+```bash
+# Make the DMG creation script executable
+chmod +x create_dmg.sh
+
+# Run the DMG creation script
+./create_dmg.sh
+```
+
+This will create `dist/AbairDubbing-macOS-1.0.0.dmg` ready for distribution.
+
+#### Build Configuration Files
+
+- **PyInstaller spec**: `build_macos.spec` - Defines what gets bundled into the .app
+- **Build script**: `build_macos.sh` - Automates the PyInstaller build process
+- **DMG script**: `create_dmg.sh` - Creates the distributable DMG file
+
+### Distribution
+
+Upload the installer to Dropbox or your preferred file hosting service and update the download link in this README.
 
 Notes
 
