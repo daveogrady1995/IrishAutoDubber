@@ -13,6 +13,18 @@
 
 **Installation**: Download and run the installer for your platform. It will create shortcuts for easy access. No Python installation required for end users!
 
+### macOS Security Note
+
+When first opening the app on macOS, you may see a security warning because the app isn't signed with an Apple Developer certificate. To approve it:
+
+1. Try to open `AbairDubbing.app`
+2. If blocked, go to **System Settings** → **Privacy & Security**
+3. Scroll down to the **Security** section
+4. Click **"Open Anyway"** next to the message about the blocked app
+5. Confirm by clicking **"Open"** in the dialog
+
+Alternatively, right-click the app and select **"Open"**, then click **"Open"** in the security dialog.
+
 ---
 
 ## 🎬 See It In Action
