@@ -80,6 +80,24 @@ class DubbingApp:
 
         # Render the app
         self.create_widgets()
+        
+        # macOS Sonoma fix: Slightly move window to refresh mouse responsiveness
+        # This fixes a known tkinter bug on macOS 14+ where buttons ignore clicks
+        self.master.after(100, self._apply_macos_fix)
+
+    def _apply_macos_fix(self):
+        """Workaround for macOS Sonoma button click bug"""
+        import platform
+        if platform.system() == "Darwin":  # macOS only
+            try:
+                x = self.master.winfo_x()
+                y = self.master.winfo_y()
+                self.master.geometry(f"+{x+1}+{y}")
+                self.master.update()
+                # Move it back to original position
+                self.master.geometry(f"+{x}+{y}")
+            except:
+                pass  # Silently fail if there's any issue
 
     def create_widgets(self):
         """Render method - composes all child components"""
