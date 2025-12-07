@@ -99,8 +99,8 @@ class DubbingApp:
             image_container,
             self.colors,
             ["image1.png"],
-            max_width=100,
-            max_height=80,
+            max_width=150,
+            max_height=100,
         )
         self.image_component.render()
 
