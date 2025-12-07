@@ -1,125 +1,210 @@
-# Irish Auto-Dubber
+# ☘️ AutoIrishDubber
 
-An application for automatically dubbing videos from English to Irish using the Abair TTS service.
+**AutoIrishDubber** is a Python-based application designed to automatically dub videos from English into Irish (Gaeilge). It leverages **Selenium** to automate speech synthesis on [Abair.ie](https://www.abair.ie/), generating dubbed audio segments that align with subtitle timings, then mixes the new audio into an output video with adjusted subtitles.
 
-![Irish Auto Dubbing Interface](images/app-screenshot.png)
+---
 
-Simply upload your video file, provide English and Irish subtitle files (.srt), and let the app automatically generate an Irish-dubbed version of your video using high-quality text-to-speech from Abair.ie.
-
-## Download
+## 📥 Download
 
 **Latest Release: v1.0.1**
+- [Download Windows Installer](https://www.dropbox.com/scl/fi/ul546zm886e567wqjlx62/AbairDubbing_Setup_v5.exe?rlkey=k2q8u5fe38cg5j5w5e0v8t37g&st=jxn4i9mf&dl=0)
 
-- [Download Windows Installer](https://www.dropbox.com/scl/fi/7avq42mecshwrk4437j85/AbairDubbing_Setup_v5.exe?rlkey=oxhd5gccuu7zsv0lw3ihd2bh5&st=6k00kwsv&dl=0)
-- [Download macOS Installer (.dmg)](https://www.dropbox.com/scl/fi/g35rkp3qy5tbltoy6e3m0/AbairDubbing-macOS.dmg?rlkey=b6k51uuoevdszn0zectweoly9&st=vht1mgc2&dl=0)
+**Installation**: Download and run the installer. It will create a desktop shortcut and start menu entry. No Python installation required for end users!
 
-## About
+---
+
+## 🎬 See It In Action
+
+Check out this TikTok profile to see the AI dubbing software in action: [@bluey95883](https://www.tiktok.com/@bluey95883)
+
+---
+
+## 🚀 Key Features
+
+* **🎬 Input Parsing & Syncing**: Reads and synchronizes English and Irish SRT subtitles, ensuring segments match perfectly.
+* **🗣️ Authentic Voice Selection**: Randomly selects between high-quality **Kerry dialect voices** (Male "Danny" or Female) with natural-sounding synthesis.
+* **⏱️ Smart Timing Logic**:
+    * Adjusts subtitle durations based on text length and reading speed (~14 chars/sec).
+    * Extends audio into silence gaps to avoid chopping.
+    * Includes a skip threshold for lagged segments.
+* **🤖 Selenium Automation**: Fully automates the interaction with Abair.ie (cookies, language switching, dialect/model selection, speed settings, synthesis, and file download). Includes robust retry logic and temp file cleanup.
+* **🔊 Audio Processing**: Uses `pydub` to build a clean audio track, inserting synced silences and appending synthesized audio (with optional speed-up for specific voices).
+* **🎞️ Video Muxing**: Uses `moviepy` to replace the original audio with the new Irish track, handling decoding errors gracefully.
+* **🖥️ Modern GUI**: User-friendly graphical interface with Material Design styling for easy video dubbing.
+* **📊 Progress Tracking**: Displays real-time progress during the dubbing process.
+
+---
+
+## 🎯 Quick Start (For End Users)
+
+1. **Download** the Windows installer from the link above
+2. **Install** by running the setup executable
+3. **Launch** the application from your desktop or start menu
+4. **Prepare your files**:
+   - Your video file (MP4, AVI, MOV, etc.)
+   - English subtitles (`.srt` file)
+   - Irish subtitles (`.srt` file) - see tips below on how to generate these
+5. **Use the GUI** to select your files and click "Start Dubbing"
+6. **Wait** for the process to complete - progress will be shown in real-time
+7. **Find your output** in the same folder as your input video
+
+### 💡 Pro Tip: Generating Subtitle Files
+
+You can generate the required SRT files using tools like **CapCut** or **ClipChamp**:
+
+1. Upload your video to CapCut/ClipChamp
+2. Use the auto-caption feature to generate English subtitles
+3. Export with the SRT file to get `eng.srt`
+4. Copy the content of `eng.srt` and use **Grok**, **Gemini**, **ChatGPT**, or **Google Translate** to translate it to Irish
+5. Save the translated file as `gael.srt`, ensuring the timings match the English file
+
+---
+
+## 🛠️ Developer Setup
 
 This workspace contains the dubbing pipeline and two frontends (CLI and GUI).
 
-Layout (important files/folders):
+### Prerequisites
 
-- `dubbing_core/` — Consolidated pipeline implementation. Call the public API `dubbing_core.run_dub(video, eng_srt, gael_srt, output_filename)`.
-- `gui/` — GUI frontend and helper modules (new, migrated from `source/`). Run: `python -m gui.gui_app`.
-- `cli/` — CLI shim that delegates to `irishautodub` (runs the same core pipeline).
-- `source/` — Original GUI implementation (left in place as a backup). If you prefer, this folder can be archived or removed; an archived copy was created at `archive/source_backup/`.
-- `irishautodub/` — Original CLI frontend (now delegates to `dubbing_core`).
-- `archive/` — Archived files and backups.
-- `.venv/` — Canonical virtualenv for running the project. Use `.\.venv\Scripts\python.exe` on Windows.
+* **Python**: Version **3.11.9** is recommended for compatibility.
+* **FFmpeg**: Required by MoviePy. Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to your system PATH.
+* **Google Chrome**: Required for Selenium automation.
 
-Quick commands
+### Installation
 
-Run GUI:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/daveogrady1995/IrishAutoDubber.git
+   cd IrishAutoDubber/app
+   ```
 
-```pwsh
-.\.venv\Scripts\python.exe -m gui.gui_app
+2. **Create and activate virtual environment**:
+   ```bash
+   # Windows:
+   python -m venv .venv
+   .\.venv\Scripts\activate
+   
+   # Mac/Linux:
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Project Structure
+
+- `dubbing_core/` — Core dubbing pipeline. API: `run_dubbing_process(video, eng_srt, gael_srt, output_filename)`
+- `gui/` — Modern GUI frontend with Material Design (tkinter-based)
+- `cli/` — Command-line interface for batch processing
+- `.venv/` — Python virtual environment for development
+- `requirements.txt` — Pinned dependencies
+
+### Quick Commands
+
+**Run GUI**:
+```bash
+.\.venv\Scripts\python.exe run_gui.py
 ```
 
-Run CLI:
-
-```pwsh
+**Run CLI**:
+```bash
 .\.venv\Scripts\python.exe -m cli.dub_to_irish <video.mp4> <eng.srt> <gael.srt> output.mp4
 ```
 
-Run import smoke-check:
-
-```pwsh
+**Run import smoke-check**:
+```bash
 .\.venv\Scripts\python.exe smoke2.py
 ```
 
-## Building the Installer
+---
 
-### Windows Installer
+## 📦 Building the Installer
 
 To create a Windows installer for distribution:
 
-#### Step 1: Build the Executable with PyInstaller
+### Step 1: Build the Executable with PyInstaller
 
-```pwsh
+```bash
 # Navigate to the app directory
-cd <your-project-path>\app
+cd app
 
 # Build the executable using PyInstaller
 .\.venv\Scripts\python.exe -m PyInstaller --clean AbairDubbing_onedir_v5.spec
 ```
 
-This will create a folder `dist\AbairDubbing_onedir_v5\` containing the executable and all dependencies.
+This creates `dist\AbairDubbing_onedir_v5\` containing the executable and all dependencies.
 
-#### Step 2: Create the Installer with Inno Setup
+### Step 2: Create the Installer with Inno Setup
 
-```pwsh
+```bash
 # Compile the installer using Inno Setup
-& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "<your-project-path>\app\dist\InnoSetup\AbairDubbingInstaller.iss"
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "dist\InnoSetup\AbairDubbingInstaller.iss"
 ```
 
-This will create `AbairDubbing_Setup_v5.exe` in `dist\InstallerOutput\`.
+This creates `AbairDubbing_Setup_v5.exe` in `dist\InstallerOutput\`.
 
-**Note**: Update the paths in `dist\InnoSetup\AbairDubbingInstaller.iss` to match your project location before running Inno Setup.
+### Step 3: Distribute
 
-#### Build Configuration Files
+Upload the installer to Dropbox or your preferred file hosting service and update the download link in this README.
+
+### Build Configuration Files
 
 - **PyInstaller spec**: `AbairDubbing_onedir_v5.spec` - Defines what gets bundled into the executable
 - **Inno Setup script**: `dist/InnoSetup/AbairDubbingInstaller.iss` - Defines the installer behavior and shortcuts
 
-### macOS Installer
+---
 
-To create a macOS DMG installer for distribution:
+## 🎥 Post-Processing (CapCut Studio)
 
-#### Step 1: Build the .app Bundle
+The generated subtitle files are optimized for video editing software like CapCut.
 
-```bash
-# Make the build script executable
-chmod +x build_macos.sh
+1. Open your project in CapCut Studio
+2. Import the dubbed video output
+3. Drag `subtitles_english.srt` or `subtitles_irish.srt` onto the timeline
+4. Result: They will align automatically with the new video timings!
 
-# Run the build script
-./build_macos.sh
-```
+---
 
-This will create `dist/AbairDubbing.app` containing the application bundle.
+## 📝 Configuration & Notes
 
-#### Step 2: Create the DMG
+* **Voice Customization**: You can modify the specific voices used by editing the `voices` list inside `dubbing_core/core.py`.
+* **Performance**: Selenium relies on the live Abair.ie website. Long texts or network delays may extend runtime. The script includes built-in waits (2-5 seconds) to mitigate errors.
+* **Chrome Requirement**: End-to-end dubbing requires Chrome and network access to `https://abair.ie/synthesis`.
+* **Temp Files**: All temporary files are now written to the system temp directory to avoid permission issues.
 
-```bash
-# Make the DMG creation script executable
-chmod +x create_dmg.sh
+---
 
-# Run the DMG creation script
-./create_dmg.sh
-```
+## 📄 Outputs
 
-This will create `dist/AbairDubbing-macOS-1.0.0.dmg` ready for distribution.
+Upon completion, the application generates:
 
-#### Build Configuration Files
+* **Dubbed video**: Your specified output filename with Irish audio
+* **Subtitles**: `subtitles_english.srt` & `subtitles_irish.srt` with timings adjusted to match the spoken Irish audio
 
-- **PyInstaller spec**: `build_macos.spec` - Defines what gets bundled into the .app
-- **Build script**: `build_macos.sh` - Automates the PyInstaller build process
-- **DMG script**: `create_dmg.sh` - Creates the distributable DMG file
+---
 
-### Distribution
+## 🤝 Contributing
 
-Upload the installer to Dropbox or your preferred file hosting service and update the download link in this README.
+Contributions are welcome! Feel free to submit issues or pull requests to improve the software.
 
-Notes
+---
 
-- End-to-end dubbing requires Chrome and network access to `https://abair.ie/synthesis`.
-- `requirements.txt` is pinned from the `.venv` — regenerate it with `.\.venv\Scripts\python.exe -m pip freeze > requirements.txt` after making env changes.
+## 📜 License
+
+This project is open-source. Please ensure you comply with Abair.ie's terms of service when using their synthesis service.
+
+---
+
+## 🙏 Credits
+
+- **Abair.ie**: For providing the Irish TTS synthesis service
+- **MoviePy**: For video processing capabilities
+- **Pydub**: For audio manipulation
+- **Selenium**: For web automation
+
+---
+
+**Made with ☘️ for the Irish language community**
