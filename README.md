@@ -7,8 +7,9 @@
 ## 📥 Download
 
 **Latest Release: v1.0.1**
-- [Download Windows Installer](https://www.dropbox.com/scl/fi/7avq42mecshwrk4437j85/AbairDubbing_Setup_v5.exe?rlkey=oxhd5gccuu7zsv0lw3ihd2bh5&st=vifiabfk&dl=0)
-- [Download macOS Installer (.dmg)](https://www.dropbox.com/scl/fi/g35rkp3qy5tbltoy6e3m0/AbairDubbing-macOS.dmg?rlkey=b6k51uuoevdszn0zectweoly9&st=vht1mgc2&dl=0)
+
+- [Download Windows Installer](https://www.dropbox.com/scl/fi/7avq42mecshwrk4437j85/AbairDubbing_Setup_v5.exe?rlkey=oxhd5gccuu7zsv0lw3ihd2bh5&st=vifiabfk&dl=1)
+- [Download macOS Installer (.dmg)](https://www.dropbox.com/scl/fi/g35rkp3qy5tbltoy6e3m0/AbairDubbing-macOS.dmg?rlkey=b6k51uuoevdszn0zectweoly9&st=vht1mgc2&dl=1)
 
 **Installation**: Download and run the installer for your platform. It will create shortcuts for easy access. No Python installation required for end users!
 
@@ -22,17 +23,17 @@ Check out this TikTok profile to see the AI dubbing software in action: [@bluey9
 
 ## 🚀 Key Features
 
-* **🎬 Input Parsing & Syncing**: Reads and synchronizes English and Irish SRT subtitles, ensuring segments match perfectly.
-* **🗣️ Authentic Voice Selection**: Randomly selects between high-quality **Kerry dialect voices** (Male "Danny" or Female) with natural-sounding synthesis.
-* **⏱️ Smart Timing Logic**:
-    * Adjusts subtitle durations based on text length and reading speed (~14 chars/sec).
-    * Extends audio into silence gaps to avoid chopping.
-    * Includes a skip threshold for lagged segments.
-* **🤖 Selenium Automation**: Fully automates the interaction with Abair.ie (cookies, language switching, dialect/model selection, speed settings, synthesis, and file download). Includes robust retry logic and temp file cleanup.
-* **🔊 Audio Processing**: Uses `pydub` to build a clean audio track, inserting synced silences and appending synthesized audio (with optional speed-up for specific voices).
-* **🎞️ Video Muxing**: Uses `moviepy` to replace the original audio with the new Irish track, handling decoding errors gracefully.
-* **🖥️ Modern GUI**: User-friendly graphical interface with Material Design styling for easy video dubbing.
-* **📊 Progress Tracking**: Displays real-time progress during the dubbing process.
+- **🎬 Input Parsing & Syncing**: Reads and synchronizes English and Irish SRT subtitles, ensuring segments match perfectly.
+- **🗣️ Authentic Voice Selection**: Randomly selects between high-quality **Kerry dialect voices** (Male "Danny" or Female) with natural-sounding synthesis.
+- **⏱️ Smart Timing Logic**:
+  - Adjusts subtitle durations based on text length and reading speed (~14 chars/sec).
+  - Extends audio into silence gaps to avoid chopping.
+  - Includes a skip threshold for lagged segments.
+- **🤖 Selenium Automation**: Fully automates the interaction with Abair.ie (cookies, language switching, dialect/model selection, speed settings, synthesis, and file download). Includes robust retry logic and temp file cleanup.
+- **🔊 Audio Processing**: Uses `pydub` to build a clean audio track, inserting synced silences and appending synthesized audio (with optional speed-up for specific voices).
+- **🎞️ Video Muxing**: Uses `moviepy` to replace the original audio with the new Irish track, handling decoding errors gracefully.
+- **🖥️ Modern GUI**: User-friendly graphical interface with Material Design styling for easy video dubbing.
+- **📊 Progress Tracking**: Displays real-time progress during the dubbing process.
 
 ---
 
@@ -67,24 +68,26 @@ This workspace contains the dubbing pipeline and two frontends (CLI and GUI).
 
 ### Prerequisites
 
-* **Python**: Version **3.11.9** is recommended for compatibility.
-* **FFmpeg**: Required by MoviePy. Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to your system PATH.
-* **Google Chrome**: Required for Selenium automation.
+- **Python**: Version **3.11.9** is recommended for compatibility.
+- **FFmpeg**: Required by MoviePy. Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to your system PATH.
+- **Google Chrome**: Required for Selenium automation.
 
 ### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/daveogrady1995/IrishAutoDubber.git
    cd IrishAutoDubber/app
    ```
 
 2. **Create and activate virtual environment**:
+
    ```bash
    # Windows:
    python -m venv .venv
    .\.venv\Scripts\activate
-   
+
    # Mac/Linux:
    python3 -m venv .venv
    source .venv/bin/activate
@@ -106,16 +109,19 @@ This workspace contains the dubbing pipeline and two frontends (CLI and GUI).
 ### Quick Commands
 
 **Run GUI**:
+
 ```bash
 .\.venv\Scripts\python.exe run_gui.py
 ```
 
 **Run CLI**:
+
 ```bash
 .\.venv\Scripts\python.exe -m cli.dub_to_irish <video.mp4> <eng.srt> <gael.srt> output.mp4
 ```
 
 **Run import smoke-check**:
+
 ```bash
 .\.venv\Scripts\python.exe smoke2.py
 ```
@@ -171,10 +177,10 @@ The generated subtitle files are optimized for video editing software like CapCu
 
 ## 📝 Configuration & Notes
 
-* **Voice Customization**: You can modify the specific voices used by editing the `voices` list inside `dubbing_core/core.py`.
-* **Performance**: Selenium relies on the live Abair.ie website. Long texts or network delays may extend runtime. The script includes built-in waits (2-5 seconds) to mitigate errors.
-* **Chrome Requirement**: End-to-end dubbing requires Chrome and network access to `https://abair.ie/synthesis`.
-* **Temp Files**: All temporary files are now written to the system temp directory to avoid permission issues.
+- **Voice Customization**: You can modify the specific voices used by editing the `voices` list inside `dubbing_core/core.py`.
+- **Performance**: Selenium relies on the live Abair.ie website. Long texts or network delays may extend runtime. The script includes built-in waits (2-5 seconds) to mitigate errors.
+- **Chrome Requirement**: End-to-end dubbing requires Chrome and network access to `https://abair.ie/synthesis`.
+- **Temp Files**: All temporary files are now written to the system temp directory to avoid permission issues.
 
 ---
 
@@ -182,8 +188,8 @@ The generated subtitle files are optimized for video editing software like CapCu
 
 Upon completion, the application generates:
 
-* **Dubbed video**: Your specified output filename with Irish audio
-* **Subtitles**: `subtitles_english.srt` & `subtitles_irish.srt` with timings adjusted to match the spoken Irish audio
+- **Dubbed video**: Your specified output filename with Irish audio
+- **Subtitles**: `subtitles_english.srt` & `subtitles_irish.srt` with timings adjusted to match the spoken Irish audio
 
 ---
 
