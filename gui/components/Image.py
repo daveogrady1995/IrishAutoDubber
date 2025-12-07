@@ -63,6 +63,8 @@ class ImageComponent:
                 image_label = tk.Label(
                     self.parent, image=self.photo, bg=self.colors["bg"]
                 )
+                # Keep a reference to prevent garbage collection on macOS
+                image_label.image = self.photo
                 image_label.pack(side="left", pady=(0, 10))
 
                 return image_label
