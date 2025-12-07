@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 import threading
 import os
+from PIL import Image, ImageTk
 
 # Use the shared wrapper module so GUI imports a single stable API.
 from dubbing_core import run_dub
@@ -212,8 +213,12 @@ class DubbingApp:
         header_frame = tk.Frame(main_container, bg=self.colors["bg"])
         header_frame.pack(fill="x", pady=(0, 30))
 
+        # Left side - text
+        text_frame = tk.Frame(header_frame, bg=self.colors["bg"])
+        text_frame.pack(side="left", fill="both", expand=True)
+
         title_label = tk.Label(
-            header_frame,
+            text_frame,
             text="Irish Auto Dubbing",
             font=("SF Pro Display", 28, "bold"),
             bg=self.colors["bg"],
@@ -222,13 +227,44 @@ class DubbingApp:
         title_label.pack(anchor="w")
 
         subtitle_label = tk.Label(
-            header_frame,
+            text_frame,
             text="Dub your videos into Irish Gaelic with Abair.ie",
             font=("SF Pro Text", 13),
             bg=self.colors["bg"],
             fg=self.colors["text_light"],
         )
         subtitle_label.pack(anchor="w", pady=(5, 0))
+
+        # Right side - image
+        try:
+            image_path = os.path.join(
+                os.path.dirname(__file__), "..", "images", "image1.png"
+            )
+            if os.path.exists(image_path):
+                img = Image.open(image_path)
+                # Resize to fit nicely in header (height ~80px)
+                img.thumbnail((250, 80), Image.Resampling.LANCZOS)
+
+                # Create rounded corners
+                mask = Image.new("L", img.size, 0)
+                from PIL import ImageDraw
+
+                draw = ImageDraw.Draw(mask)
+                draw.rounded_rectangle([(0, 0), img.size], radius=15, fill=255)
+
+                # Apply mask to create rounded corners
+                rounded_img = Image.new("RGBA", img.size, (0, 0, 0, 0))
+                rounded_img.paste(img, (0, 0))
+                rounded_img.putalpha(mask)
+
+                self.header_photo = ImageTk.PhotoImage(rounded_img)
+
+                image_label = tk.Label(
+                    header_frame, image=self.header_photo, bg=self.colors["bg"]
+                )
+                image_label.pack(side="right", padx=(20, 0))
+        except Exception as e:
+            print(f"Could not load header image: {e}")
 
         # 1. Input Files Card
         files_card = self.create_card(main_container, "Upload Files")
