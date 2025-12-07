@@ -25,6 +25,11 @@ When first opening the app on macOS, you may see a security warning because the 
 
 Alternatively, right-click the app and select **"Open"**, then click **"Open"** in the security dialog.
 
+**If the above methods don't work**, open Terminal and run:
+```bash
+xattr -d com.apple.quarantine /Applications/AbairDubbing.app
+```
+
 ---
 
 ## 🎬 See It In Action
