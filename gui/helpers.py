@@ -68,3 +68,57 @@ def get_latest_file(folder):
     if not files:
         return None
     return max(files, key=os.path.getmtime)
+
+
+# --- LANGUAGE SELECTOR HELPER ---
+import tkinter as tk
+from gui.localization import get_localization
+
+
+def create_language_selector(parent, colors, on_language_change):
+    """Create a language selector dropdown"""
+    loc = get_localization()
+
+    selector_frame = tk.Frame(parent, bg=colors["bg"])
+
+    # Language label
+    lang_label = tk.Label(
+        selector_frame,
+        text="🌐",
+        font=("SF Pro Text", 16),
+        bg=colors["bg"],
+        fg=colors["text"],
+    )
+    lang_label.pack(side="left", padx=(0, 8))
+
+    # Language variable
+    lang_var = tk.StringVar(value=loc.get_current_language())
+
+    # Create custom styled option menu
+    lang_options = [
+        ("English", "en"),
+        ("Gaeilge", "ga"),
+    ]
+
+    def change_language(lang_code):
+        on_language_change(lang_code)
+
+    # Create buttons for language selection
+    for lang_name, lang_code in lang_options:
+        is_current = lang_code == loc.get_current_language()
+
+        btn = tk.Button(
+            selector_frame,
+            text=lang_name,
+            command=lambda lc=lang_code: change_language(lc),
+            font=("SF Pro Text", 11, "bold" if is_current else "normal"),
+            bg=colors["primary"] if is_current else colors["card"],
+            fg="white" if is_current else colors["text"],
+            relief="flat",
+            padx=12,
+            pady=6,
+            cursor="hand2",
+        )
+        btn.pack(side="left", padx=2)
+
+    return selector_frame
