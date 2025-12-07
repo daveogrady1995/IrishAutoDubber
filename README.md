@@ -1,5 +1,7 @@
 # ☘️ AutoIrishDubber
 
+![AutoIrishDubber Screenshot](https://github.com/daveogrady1995/IrishAutoDubber/blob/main/screenshot.png?raw=true)
+
 **AutoIrishDubber** is a Python-based application designed to automatically dub videos from English into Irish (Gaeilge). It leverages **Selenium** to automate speech synthesis on [Abair.ie](https://www.abair.ie/), generating dubbed audio segments that align with subtitle timings, then mixes the new audio into an output video with adjusted subtitles.
 
 ---
