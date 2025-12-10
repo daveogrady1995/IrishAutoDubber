@@ -20,6 +20,7 @@ from gui.components import (
 # Import localization
 from gui.localization import t, set_language, get_localization
 from gui.helpers import create_language_selector
+from gui.window_utils import setup_responsive_window, apply_macos_fix
 
 # ============================================================================
 # MAIN APP COMPONENT (Container)
@@ -33,10 +34,8 @@ class DubbingApp:
         self.master = master
         master.title(t("window_title"))
 
-        # Set window size and make it resizable
-        master.geometry("900x1000")
-        master.resizable(True, True)
-        master.minsize(900, 950)
+        # Responsive window sizing based on screen size
+        self.window_scale = setup_responsive_window(master)
 
         # Modern color scheme (light mode)
         self.colors = {
@@ -83,42 +82,33 @@ class DubbingApp:
         
         # macOS Sonoma fix: Slightly move window to refresh mouse responsiveness
         # This fixes a known tkinter bug on macOS 14+ where buttons ignore clicks
-        self.master.after(100, self._apply_macos_fix)
-
-    def _apply_macos_fix(self):
-        """Workaround for macOS Sonoma button click bug"""
-        import platform
-        if platform.system() == "Darwin":  # macOS only
-            try:
-                x = self.master.winfo_x()
-                y = self.master.winfo_y()
-                self.master.geometry(f"+{x+1}+{y}")
-                self.master.update()
-                # Move it back to original position
-                self.master.geometry(f"+{x}+{y}")
-            except:
-                pass  # Silently fail if there's any issue
+        self.master.after(100, lambda: apply_macos_fix(self.master))
 
     def create_widgets(self):
         """Render method - composes all child components"""
-        # Main container with padding
+        # Main container with responsive padding
+        padding = self.window_scale["padding"]
         main_container = tk.Frame(self.master, bg=self.colors["bg"])
-        main_container.pack(fill="both", expand=True, padx=30, pady=30)
+        main_container.pack(fill="both", expand=True, padx=padding, pady=padding)
 
         # Top row: Image (left) and Language Selector (right)
+        # Reduce vertical spacing on smaller screens
+        top_pady = (0, 15) if self.window_scale["height"] < 900 else (0, 20)
         top_row = tk.Frame(main_container, bg=self.colors["bg"])
-        top_row.pack(fill="x", pady=(0, 20))
+        top_row.pack(fill="x", pady=top_pady)
 
         # Render Image Component (left side of top row)
         image_container = tk.Frame(top_row, bg=self.colors["bg"])
         image_container.pack(side="left", fill="both", expand=True)
 
+        # Scale image based on window size
+        image_scale = self.window_scale.get("image_scale", 1.0)
         self.image_component = ImageComponent(
             image_container,
             self.colors,
             ["image1.png"],
-            max_width=150,
-            max_height=100,
+            max_width=int(150 * image_scale),
+            max_height=int(100 * image_scale),
         )
         self.image_component.render()
 
@@ -128,23 +118,29 @@ class DubbingApp:
         )
         lang_selector.pack(side="right")
 
-        # Render Header Component
+        # Render Header Component with responsive spacing
+        header_spacing = self.window_scale.get("component_spacing", 20)
         self.header_component = HeaderComponent(main_container, self.colors)
-        self.header_component.render()
+        self.header_component.render(spacing=header_spacing)
 
-        # Render Upload Files Card Component
+        # Render Upload Files Card Component with responsive spacing
+        card_spacing = self.window_scale.get("card_spacing", 15)
+        card_padding = self.window_scale.get("card_padding", 15)
         self.upload_files_component = UploadFilesCard(
             main_container,
             self.colors,
             self.paths,
             self.file_displays,
             self.browse_file,
+            spacing=card_spacing,
+            padding=card_padding,
         )
         self.upload_files_component.render()
 
-        # Render Output Settings Card Component
+        # Render Output Settings Card Component with responsive spacing
         self.output_settings_component = OutputSettingsCard(
-            main_container, self.colors, self.output_name
+            main_container, self.colors, self.output_name,
+            spacing=card_spacing, padding=card_padding
         )
         self.output_settings_component.render()
 

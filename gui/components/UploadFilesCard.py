@@ -11,17 +11,19 @@ from gui.localization import t
 class UploadFilesCard:
     """Upload files card component containing multiple file inputs"""
 
-    def __init__(self, parent, colors, paths, file_displays, browse_callback):
+    def __init__(self, parent, colors, paths, file_displays, browse_callback, spacing=20, padding=20):
         self.parent = parent
         self.colors = colors
         self.paths = paths
         self.file_displays = file_displays
         self.browse_callback = browse_callback
+        self.spacing = spacing
+        self.padding = padding
 
     def render(self):
         """Render the upload files card with all file inputs in columns"""
         # Create card
-        card = CardComponent(self.parent, t("upload_files_title"), self.colors)
+        card = CardComponent(self.parent, t("upload_files_title"), self.colors, self.spacing, self.padding)
         card_frame = card.render()
 
         # File input configurations

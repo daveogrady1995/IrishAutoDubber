@@ -17,10 +17,10 @@ class HeaderComponent:
         self.title_label = None
         self.subtitle_label = None
 
-    def render(self):
+    def render(self, spacing=30):
         """Render the header component"""
         self.frame = tk.Frame(self.parent, bg=self.colors["bg"])
-        self.frame.pack(fill="x", pady=(0, 30))
+        self.frame.pack(fill="x", pady=(0, spacing))
 
         # Text content
         text_frame = tk.Frame(self.frame, bg=self.colors["bg"])
@@ -29,7 +29,7 @@ class HeaderComponent:
         self.title_label = tk.Label(
             text_frame,
             text=t("header_title"),
-            font=("SF Pro Display", 28, "bold"),
+            font=("SF Pro Display", 24, "bold"),
             bg=self.colors["bg"],
             fg=self.colors["text"],
         )

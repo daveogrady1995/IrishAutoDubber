@@ -65,7 +65,7 @@ class ImageComponent:
                 )
                 # Keep a reference to prevent garbage collection on macOS
                 image_label.image = self.photo
-                image_label.pack(side="left", pady=(0, 10))
+                image_label.pack(side="left", pady=(0, 5))
 
                 return image_label
         except Exception as e:
