@@ -7,6 +7,11 @@ Produces temporary English and Irish SRT files ready for the dubbing pipeline.
 """
 
 import os
+import platform
+
+# macOS-specific fix for OpenMP issue (Windows not affected)
+if platform.system() == "Darwin":
+    os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 
 def _seconds_to_srt_time(seconds: float) -> str:
