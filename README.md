@@ -8,9 +8,9 @@
 
 ## 📥 Download
 
-**Latest Release: v1.0.1**
+**Latest Release: v1.0.2**
 
-- [Download Windows Installer](https://www.dropbox.com/scl/fi/7avq42mecshwrk4437j85/AbairDubbing_Setup_v5.exe?rlkey=oxhd5gccuu7zsv0lw3ihd2bh5&st=vifiabfk&dl=1)
+- [Download Windows Installer](https://www.dropbox.com/scl/fi/qvsf9fd7yalm914auirpa/AbairDubbing_Setup.exe?rlkey=v3sgzvv1wtlkrm831qq5jrgwp&st=l9pwzrrn&dl=1)
 - [Download macOS Installer (.dmg)](https://www.dropbox.com/scl/fi/9uts1oawo4popp6yv4iq8/AbairDubbing-macOS.dmg?rlkey=ei3wthbcqnh2qzfnx5ub7nscf&st=jy743r86&dl=1)
 
 **Installation**: Download and run the installer for your platform. It will create shortcuts for easy access. No Python installation required for end users!
