@@ -30,6 +30,7 @@ class Localization:
             # Status & Action
             "status_ready": "Ready to start",
             "status_processing": "Processing - Please wait...",
+            "status_transcribing": "Transcribing & translating - Please wait...",
             "status_complete": "Complete! Video ready",
             "status_failed": "Failed - See error message",
             "start_button": "Start Dubbing",
@@ -43,6 +44,9 @@ class Localization:
             "select_file_title": "Select {0} file",
             "video_files": "Video Files",
             "srt_files": "SRT Files",
+            # Auto-dub
+            "auto_dub_label": "Auto Dub",
+            "auto_dub_description": "(generate subtitles automatically — no SRT files needed)",
         },
         "ga": {
             # Window
@@ -66,6 +70,7 @@ class Localization:
             # Status & Action
             "status_ready": "Réidh le tosú",
             "status_processing": "Á phróiseáil - Fan le do thoil...",
+            "status_transcribing": "Ag traschríobh & ag aistriú - Fan le do thoil...",
             "status_complete": "Críochnaithe! Físeán réidh",
             "status_failed": "Theip - Féach ar an earráid",
             "start_button": "Tosaigh an Dubáil",
@@ -79,6 +84,9 @@ class Localization:
             "select_file_title": "Roghnaigh comhad {0}",
             "video_files": "Comhaid Físe",
             "srt_files": "Comhaid SRT",
+            # Auto-dub
+            "auto_dub_label": "Uath-Dhubáil",
+            "auto_dub_description": "(gin fotheidil go huathoibríoch — níl comhaid SRT de dhíth)",
         },
     }
 

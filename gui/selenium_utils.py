@@ -35,19 +35,23 @@ def setup_selenium(current_folder):
             base = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         return os.path.join(base, p)
 
-    # Prefer an included chromedriver if bundled with the app
-    # Use different executable name based on platform
+    # When running as a PyInstaller bundle use the included chromedriver.
+    # When running from source always use webdriver-manager so it
+    # downloads a driver that matches the currently installed Chrome.
+    import sys
     import platform
-    if platform.system() == "Windows":
-        driver_filename = "chromedriver.exe"
+
+    if getattr(sys, "frozen", False):
+        driver_filename = (
+            "chromedriver.exe" if platform.system() == "Windows" else "chromedriver"
+        )
+        driver_path = resource_path(os.path.join("drivers", driver_filename))
+        if os.path.exists(driver_path):
+            service = Service(driver_path)
+        else:
+            service = Service(ChromeDriverManager().install())
     else:
-        driver_filename = "chromedriver"
-    
-    driver_path = resource_path(os.path.join("drivers", driver_filename))
-    if os.path.exists(driver_path):
-        service = Service(driver_path)
-    else:
-        # fallback to webdriver-manager (downloads matching driver)
+        # Running from source – let webdriver-manager pick the right version
         service = Service(ChromeDriverManager().install())
 
     driver = webdriver.Chrome(service=service, options=chrome_options)

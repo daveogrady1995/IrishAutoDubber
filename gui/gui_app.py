@@ -64,6 +64,9 @@ class DubbingApp:
 
         self.output_name = tk.StringVar(value="dubbed_output.mp4")
 
+        # Auto-dub mode: skip SRT file inputs and generate them via Whisper+NLLB
+        self.auto_dub = tk.BooleanVar(value=False)
+
         self.file_displays = {
             "video": tk.StringVar(value=t("no_file_selected")),
             "eng_srt": tk.StringVar(value=t("no_file_selected")),
@@ -79,7 +82,7 @@ class DubbingApp:
 
         # Render the app
         self.create_widgets()
-        
+
         # macOS Sonoma fix: Slightly move window to refresh mouse responsiveness
         # This fixes a known tkinter bug on macOS 14+ where buttons ignore clicks
         self.master.after(100, lambda: apply_macos_fix(self.master))
@@ -132,6 +135,7 @@ class DubbingApp:
             self.paths,
             self.file_displays,
             self.browse_file,
+            auto_dub_var=self.auto_dub,
             spacing=card_spacing,
             padding=card_padding,
         )
@@ -139,8 +143,11 @@ class DubbingApp:
 
         # Render Output Settings Card Component with responsive spacing
         self.output_settings_component = OutputSettingsCard(
-            main_container, self.colors, self.output_name,
-            spacing=card_spacing, padding=card_padding
+            main_container,
+            self.colors,
+            self.output_name,
+            spacing=card_spacing,
+            padding=card_padding,
         )
         self.output_settings_component.render()
 
@@ -198,7 +205,12 @@ class DubbingApp:
     def start_dubbing_thread(self):
         """Event handler for starting dubbing process"""
         # 1. Validation Check
-        required_files = ["video", "eng_srt", "gael_srt"]
+        if self.auto_dub.get():
+            # Auto-dub mode: only the video file is required
+            required_files = ["video"]
+        else:
+            required_files = ["video", "eng_srt", "gael_srt"]
+
         for key in required_files:
             if not self.paths[key].get() or not os.path.exists(self.paths[key].get()):
                 messagebox.showerror(
@@ -223,13 +235,27 @@ class DubbingApp:
     def run_process_in_thread(self):
         """Background process execution"""
         try:
+            video_path = self.paths["video"].get()
+            output_filename = self.output_name.get()
+
+            if self.auto_dub.get():
+                # Auto-dub: transcribe + translate to generate SRT files on the fly
+                from services.transcription_service import generate_srt_files
+
+                output_dir = os.path.dirname(video_path)
+                self.master.after(
+                    0,
+                    lambda: self.status_action_component.status_label.config(
+                        text=t("status_transcribing")
+                    ),
+                )
+                eng_srt_path, gael_srt_path = generate_srt_files(video_path, output_dir)
+            else:
+                eng_srt_path = self.paths["eng_srt"].get()
+                gael_srt_path = self.paths["gael_srt"].get()
+
             # Gather the selected paths and output name
-            args = (
-                self.paths["video"].get(),
-                self.paths["eng_srt"].get(),
-                self.paths["gael_srt"].get(),
-                self.output_name.get(),
-            )
+            args = (video_path, eng_srt_path, gael_srt_path, output_filename)
 
             # Execute core dubbing script
             result_message = run_dub(*args)
