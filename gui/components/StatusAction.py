@@ -22,14 +22,14 @@ class StatusActionComponent:
     def render(self):
         """Render the status and action section"""
         action_frame = tk.Frame(self.parent, bg=self.colors["bg"])
-        action_frame.pack(fill="x", pady=(20, 0))
+        action_frame.pack(fill="x", pady=(10, 0))
 
         # Status indicator
         status_container = tk.Frame(action_frame, bg=self.colors["card"], relief="flat")
-        status_container.pack(fill="x", pady=(0, 15))
+        status_container.pack(fill="x", pady=(0, 8))
 
         status_inner = tk.Frame(status_container, bg=self.colors["card"])
-        status_inner.pack(fill="x", padx=20, pady=15)
+        status_inner.pack(fill="x", padx=20, pady=10)
 
         self.status_indicator = tk.Label(
             status_inner,

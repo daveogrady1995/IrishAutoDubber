@@ -58,7 +58,7 @@ class UploadFilesCard:
 
         # --- Auto-dub checkbox ---
         checkbox_frame = tk.Frame(card_frame, bg=self.colors["card"])
-        checkbox_frame.pack(fill="x", pady=(8, 4))
+        checkbox_frame.pack(fill="x", pady=(4, 2))
 
         auto_dub_cb = tk.Checkbutton(
             checkbox_frame,
@@ -108,7 +108,7 @@ class UploadFilesCard:
 
         # Create a two-column layout
         columns_frame = tk.Frame(card_frame, bg=self.colors["card"])
-        columns_frame.pack(fill="both", expand=True, pady=(15, 0))
+        columns_frame.pack(fill="both", expand=True, pady=(8, 0))
 
         # Left column — always visible (video)
         left_column = tk.Frame(columns_frame, bg=self.colors["card"])

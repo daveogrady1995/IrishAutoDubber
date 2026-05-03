@@ -30,7 +30,7 @@ class CardComponent:
 
         # Card header
         header = tk.Frame(self.card, bg=self.colors["card"])
-        header.pack(fill="x", padx=self.padding, pady=(self.padding, 10))
+        header.pack(fill="x", padx=self.padding, pady=(self.padding, 5))
 
         tk.Label(
             header,

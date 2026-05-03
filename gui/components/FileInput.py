@@ -34,11 +34,11 @@ class FileInputComponent:
     def render(self):
         """Render the file input row"""
         row_frame = tk.Frame(self.parent, bg=self.colors["card"])
-        row_frame.pack(fill="x", padx=20, pady=(0, 15))
+        row_frame.pack(fill="x", padx=20, pady=(0, 8))
 
         # Label with icon
         label_frame = tk.Frame(row_frame, bg=self.colors["card"])
-        label_frame.pack(fill="x", pady=(0, 8))
+        label_frame.pack(fill="x", pady=(0, 4))
 
         tk.Label(
             label_frame,
@@ -53,7 +53,7 @@ class FileInputComponent:
         input_container.pack(fill="x")
 
         inner_container = tk.Frame(input_container, bg=self.colors["input_bg"])
-        inner_container.pack(fill="x", padx=15, pady=12)
+        inner_container.pack(fill="x", padx=15, pady=8)
 
         # File name display
         file_label = tk.Label(
